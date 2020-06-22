@@ -6,6 +6,5 @@
   "scripts": {
     "test": "test"
   },
-  "author": "mladen.cikara@gmail.com",
-  "license": "ISC"
+  "author": "mladen.cikara@gmail.com"
 }
