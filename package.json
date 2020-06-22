@@ -1,0 +1,11 @@
+{
+  "name": "learning-typescript",
+  "version": "1.0.0",
+  "description": "Learning TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "mladen.cikara@gmail.com",
+  "license": "ISC"
+}
