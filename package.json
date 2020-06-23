@@ -6,5 +6,11 @@
   "scripts": {
     "test": "test"
   },
-  "author": "mladen.cikara@gmail.com"
+  "author": "mladen.cikara@gmail.com",
+  "devDependencies": {
+    "@types/jest": "^26.0.0",
+    "jest": "^26.0.1",
+    "ts-jest": "^26.1.1",
+    "typescript": "^3.9.5"
+  }
 }
