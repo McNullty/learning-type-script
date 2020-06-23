@@ -4,7 +4,8 @@
   "description": "Learning TypeScript",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "jest",
+    "coverage": "jest --coverage"
   },
   "author": "mladen.cikara@gmail.com",
   "devDependencies": {
