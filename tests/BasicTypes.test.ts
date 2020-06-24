@@ -66,21 +66,24 @@ I'll be ${age + 1} years old next month.`;
     it('Enum example', () => {
         // By default enums index start with 0
         enum Color {Red, Green, Blue}
+
         let c: Color = Color.Green;
         expect(c).toBe(1);
 
         // You can set index of first element all other are incremented by one
         enum Color2 {Red = 1, Green, Blue}
+
         let c2: Color2 = Color2.Green;
         expect(c2).toBe(2);
 
         // You can manually set every value
         enum Color3 {Red = 1, Green = 2, Blue = 4}
+
         let c3: Color3 = Color3.Blue;
         expect(c3).toBe(4);
 
         // You can access enum name by index
-        let c4 : string = Color2[2];
+        let c4: string = Color2[2];
         expect(c4).toBe('Green');
     });
 
@@ -130,6 +133,50 @@ I'll be ${age + 1} years old next month.`;
             throw new Error(message);
         }
 
-        expect(() => {error("Something failed")}).toThrow("Something failed");
+        expect(() => {
+            error("Something failed")
+        }).toThrow("Something failed");
+    });
+
+    it('Object example', () => {
+        // object is a type that represents the non-primitive type, i.e. anything that is not number, string, boolean,
+        // bigint, symbol, null, or undefined.
+
+        function checkObject(o: object | null): string {
+            if (o === null) {
+                return "null";
+            }
+            return "object"
+        }
+
+        expect(checkObject({prop: 0})).toBe("object");
+        expect(checkObject(null)).toBe("null");
+
+        /*
+        checkObject(42); // Error
+        checkObject("string"); // Error
+        checkObject(false); // Error
+        checkObject(undefined); // Error
+         */
+    });
+
+    it('Type assertions example', () => {
+        // A type assertion is like a type cast in other languages, but performs no special checking or restructuring
+        // of data. It has no runtime impact, and is used purely by the compiler. TypeScript assumes that you, the
+        // programmer, have performed any special checks that you need.
+
+        let someValue: any = "this is a string";
+
+        let strLength: number = (<string>someValue).length;
+        expect(strLength).toBe(16);
+
+        // The two samples are equivalent. Using one over the other is mostly a choice of preference; however,
+        // when using TypeScript with JSX, only as-style assertions are allowed.
+        let strLength2: number = (someValue as string).length;
+        expect(strLength2).toBe(16);
+    });
+
+    it('', () => {
+
     });
 })
