@@ -1,4 +1,4 @@
 /.idea
 /node_modules
-/tests/*.HelloWorld.test.js
+/tests/*.test.js
 /coverage
