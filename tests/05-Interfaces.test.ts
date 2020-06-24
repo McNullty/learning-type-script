@@ -36,7 +36,7 @@ describe('Examples for Interfaces', () => {
             width?: number;
         }
 
-        function createSquare(config: SquareConfig): {color: string; area: number} {
+        function createSquare(config: SquareConfig): { color: string; area: number } {
             let newSquare = {color: "white", area: 100};
             if (config.color) {
                 newSquare.color = config.color;
@@ -62,7 +62,7 @@ describe('Examples for Interfaces', () => {
             readonly y: number;
         }
 
-        let p1: Point = { x: 10, y: 20 };
+        let p1: Point = {x: 10, y: 20};
 
         expect(p1.x).toBe(10);
 
@@ -74,8 +74,8 @@ describe('Examples for Interfaces', () => {
         let a: number[] = [1, 2, 3, 4];
         let ro: ReadonlyArray<number> = a;
 
-        expect(ro).toStrictEqual([1,2,3,4]);
-        expect(a).toStrictEqual([1,2,3,4]);
+        expect(ro).toStrictEqual([1, 2, 3, 4]);
+        expect(a).toStrictEqual([1, 2, 3, 4]);
         // ro[0] = 12; // error!
         // ro.push(5); // error!
         // ro.length = 100; // error!
@@ -86,7 +86,7 @@ describe('Examples for Interfaces', () => {
 
         // You can still override it with a type assertion, though:
         a = ro as number[];
-        expect(a).toStrictEqual([1,2,3,4]);
+        expect(a).toStrictEqual([1, 2, 3, 4]);
     });
 
     it('Excess Property Checks', () => {
@@ -95,7 +95,7 @@ describe('Examples for Interfaces', () => {
             width?: number;
         }
 
-        function createSquare(config: SquareConfig2): {color: string; area: number} {
+        function createSquare(config: SquareConfig2): { color: string; area: number } {
             let newSquare = {color: "white", area: 100};
             if (config.color) {
                 newSquare.color = config.color;
@@ -117,10 +117,11 @@ describe('Examples for Interfaces', () => {
         interface SquareConfig2 {
             color?: string;
             width?: number;
+
             [propName: string]: any;
         }
 
-        function createSquare2(config: SquareConfig2): {color: string; area: number} {
+        function createSquare2(config: SquareConfig2): { color: string; area: number } {
             let newSquare = {color: "white", area: 100};
             if (config.color) {
                 newSquare.color = config.color;
@@ -144,7 +145,7 @@ describe('Examples for Interfaces', () => {
             width?: number;
         }
 
-        function createSquare(config: SquareConfig3): {color: string; area: number} {
+        function createSquare(config: SquareConfig3): { color: string; area: number } {
             let newSquare = {color: "white", area: 100};
             if (config.color) {
                 newSquare.color = config.color;
@@ -170,34 +171,34 @@ describe('Examples for Interfaces', () => {
         }
 
         let mySearch: SearchFunc;
-        mySearch = function(source: string, subString: string) {
+        mySearch = function (source: string, subString: string) {
             let result = source.search(subString);
             return result > -1;
         }
 
-        expect(mySearch("test","st")).toBeTruthy();
-        expect(mySearch("test","fst")).toBeFalsy();
+        expect(mySearch("test", "st")).toBeTruthy();
+        expect(mySearch("test", "fst")).toBeFalsy();
 
         // For function types to correctly type check, the names of the parameters do not need to match.
         let mySearch2: SearchFunc;
-        mySearch2 = function(src: string, sub: string): boolean {
+        mySearch2 = function (src: string, sub: string): boolean {
             let result = src.search(sub);
             return result > -1;
         }
 
-        expect(mySearch2("test","st")).toBeTruthy();
-        expect(mySearch2("test","fst")).toBeFalsy();
+        expect(mySearch2("test", "st")).toBeTruthy();
+        expect(mySearch2("test", "fst")).toBeFalsy();
 
         // If you do not want to specify types at all, TypeScript’s contextual typing can infer the argument types since
         // the function value is assigned directly to a variable of type SearchFunc
         let mySearch3: SearchFunc;
-        mySearch3 = function(src, sub) {
+        mySearch3 = function (src, sub) {
             let result = src.search(sub);
             return result > -1;
         }
 
-        expect(mySearch3("test","st")).toBeTruthy();
-        expect(mySearch3("test","fst")).toBeFalsy();
+        expect(mySearch3("test", "st")).toBeTruthy();
+        expect(mySearch3("test", "fst")).toBeFalsy();
     });
 
     it('Index-able Types', () => {
@@ -209,5 +210,108 @@ describe('Examples for Interfaces', () => {
         myArray = ["Bob", "Fred"];
 
         expect(myArray[0]).toBe("Bob");
+    });
+
+    it('Extending interfaces ', () => {
+        interface Shape {
+            color: string;
+        }
+
+        interface Square extends Shape {
+            sideLength: number;
+        }
+
+        let square = {} as Square;
+        square.color = "blue";
+        square.sideLength = 10;
+
+        expect(square).toStrictEqual({color: "blue", sideLength: 10});
+    });
+
+    it('An interface can extend multiple interfaces', () => {
+        interface Shape {
+            color: string;
+        }
+
+        interface PenStroke {
+            penWidth: number;
+        }
+
+        interface Square extends Shape, PenStroke {
+            sideLength: number;
+        }
+
+        let square = {} as Square;
+        square.color = "blue";
+        square.sideLength = 10;
+        square.penWidth = 5.0;
+
+        expect(square).toStrictEqual({color: "blue", sideLength: 10, penWidth: 5.0});
+    });
+
+    it('Hybrid Types', () => {
+        interface Counter {
+            (start: number): string;
+
+            interval: number;
+
+            reset(): void;
+        }
+
+        function getCounter(): Counter {
+            let counter = (function (start: number) {
+            }) as Counter;
+            counter.interval = 123;
+            counter.reset = function () {
+            };
+            return counter;
+        }
+
+        let c = getCounter();
+        c(10);
+        c.reset();
+        c.interval = 5.0;
+    });
+
+    it('Interfaces Extending Classes', () => {
+        /*
+        When an interface type extends a class type it inherits the members of the class but not their implementations.
+        It is as if the interface had declared all of the members of the class without providing an implementation.
+        Interfaces inherit even the private and protected members of a base class. This means that when you create an
+        interface that extends a class with private or protected members, that interface type can only be implemented by
+        that class or a subclass of it.
+
+        This is useful when you have a large inheritance hierarchy, but want to specify that your code works with only
+        subclasses that have certain properties. The subclasses don’t have to be related besides inheriting from the base
+        class.
+         */
+
+        class Control {
+            private state: any;
+        }
+
+        interface SelectableControl extends Control {
+            select(): void;
+        }
+
+        class Button extends Control implements SelectableControl {
+            select() { }
+        }
+
+        class TextBox extends Control {
+            select() { }
+        }
+
+        // Error: Property 'state' is missing in type 'Image'.
+        /*
+        class Image implements SelectableControl {
+            private state: any;
+            select() { }
+        }
+        */
+
+        class Location {
+
+        }
     });
 })
