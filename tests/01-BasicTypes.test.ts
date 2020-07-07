@@ -122,9 +122,17 @@ I'll be ${age + 1} years old next month.`;
 
         expect(s).toBeUndefined();
         expect(s).not.toBeNull();
+        expect(s).toBeFalsy();
 
         s = 'Set';
         expect(s).not.toBeUndefined();
+
+        // if variable is set it will be "truthy"
+        expect(s).toBeTruthy();
+
+        if(s) {
+            console.log("Variable is set");
+        }
     });
 
     it('Never return type', () => {
